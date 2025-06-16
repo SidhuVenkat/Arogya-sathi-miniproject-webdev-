@@ -43,3 +43,4 @@ Nutrition & hygiene modules (audio/visual)
 🔹 5. Emergency SOS Integration (Optional)
 
 For serious cases, app suggests nearby PHCs or emergency contacts.
+![Image](https://github.com/user-attachments/assets/a6e87087-0ce5-4dcf-b90d-28ee0b8796ab)
