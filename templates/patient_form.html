@@ -1,0 +1,245 @@
+{% extends "base.html" %}
+
+{% block title %}
+    {% if edit_mode %}Edit Patient{% else %}Register New Patient{% endif %} - Rural Health Assistant
+{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-header">
+            <h1 class="h2 mb-4">
+                <i data-feather="{% if edit_mode %}edit{% else %}user-plus{% endif %}" class="me-2"></i>
+                {% if edit_mode %}Edit Patient Information{% else %}Register New Patient{% endif %}
+            </h1>
+        </div>
+    </div>
+</div>
+
+<div class="row">
+    <div class="col-lg-8">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i data-feather="clipboard" class="me-2"></i>
+                    Patient Information
+                </h5>
+            </div>
+            <div class="card-body">
+                <form method="POST" novalidate>
+                    <div class="row">
+                        <!-- Patient ID -->
+                        <div class="col-md-6 mb-3">
+                            <label for="patient_id" class="form-label">
+                                <i data-feather="hash" class="me-1"></i>Patient ID *
+                            </label>
+                            <input type="text" class="form-control form-control-lg" 
+                                   id="patient_id" name="patient_id" required
+                                   value="{{ patient.patient_id if edit_mode else '' }}"
+                                   {% if edit_mode %}readonly{% endif %}>
+                            <div class="form-text">Unique identifier for the patient</div>
+                        </div>
+                        
+                        <!-- Name -->
+                        <div class="col-md-6 mb-3">
+                            <label for="name" class="form-label">
+                                <i data-feather="user" class="me-1"></i>Full Name *
+                            </label>
+                            <input type="text" class="form-control form-control-lg" 
+                                   id="name" name="name" required
+                                   value="{{ patient.name if edit_mode else '' }}">
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Age -->
+                        <div class="col-md-4 mb-3">
+                            <label for="age" class="form-label">
+                                <i data-feather="calendar" class="me-1"></i>Age *
+                            </label>
+                            <input type="number" class="form-control form-control-lg" 
+                                   id="age" name="age" required min="0" max="120"
+                                   value="{{ patient.age if edit_mode else '' }}">
+                        </div>
+                        
+                        <!-- Gender -->
+                        <div class="col-md-4 mb-3">
+                            <label for="gender" class="form-label">
+                                <i data-feather="users" class="me-1"></i>Gender *
+                            </label>
+                            <select class="form-select form-select-lg" id="gender" name="gender" required>
+                                <option value="">Select Gender</option>
+                                <option value="Male" {% if edit_mode and patient.gender == 'Male' %}selected{% endif %}>Male</option>
+                                <option value="Female" {% if edit_mode and patient.gender == 'Female' %}selected{% endif %}>Female</option>
+                                <option value="Other" {% if edit_mode and patient.gender == 'Other' %}selected{% endif %}>Other</option>
+                            </select>
+                        </div>
+                        
+                        <!-- Blood Group -->
+                        <div class="col-md-4 mb-3">
+                            <label for="blood_group" class="form-label">
+                                <i data-feather="droplet" class="me-1"></i>Blood Group
+                            </label>
+                            <select class="form-select form-select-lg" id="blood_group" name="blood_group">
+                                <option value="">Select Blood Group</option>
+                                <option value="A+" {% if edit_mode and patient.blood_group == 'A+' %}selected{% endif %}>A+</option>
+                                <option value="A-" {% if edit_mode and patient.blood_group == 'A-' %}selected{% endif %}>A-</option>
+                                <option value="B+" {% if edit_mode and patient.blood_group == 'B+' %}selected{% endif %}>B+</option>
+                                <option value="B-" {% if edit_mode and patient.blood_group == 'B-' %}selected{% endif %}>B-</option>
+                                <option value="AB+" {% if edit_mode and patient.blood_group == 'AB+' %}selected{% endif %}>AB+</option>
+                                <option value="AB-" {% if edit_mode and patient.blood_group == 'AB-' %}selected{% endif %}>AB-</option>
+                                <option value="O+" {% if edit_mode and patient.blood_group == 'O+' %}selected{% endif %}>O+</option>
+                                <option value="O-" {% if edit_mode and patient.blood_group == 'O-' %}selected{% endif %}>O-</option>
+                            </select>
+                        </div>
+                    </div>
+                    
+                    <div class="row">
+                        <!-- Phone -->
+                        <div class="col-md-6 mb-3">
+                            <label for="phone" class="form-label">
+                                <i data-feather="phone" class="me-1"></i>Phone Number *
+                            </label>
+                            <input type="tel" class="form-control form-control-lg" 
+                                   id="phone" name="phone" required
+                                   value="{{ patient.phone if edit_mode else '' }}">
+                        </div>
+                        
+                        <!-- Emergency Contact -->
+                        <div class="col-md-6 mb-3">
+                            <label for="emergency_contact" class="form-label">
+                                <i data-feather="phone-call" class="me-1"></i>Emergency Contact
+                            </label>
+                            <input type="tel" class="form-control form-control-lg" 
+                                   id="emergency_contact" name="emergency_contact"
+                                   value="{{ patient.emergency_contact if edit_mode else '' }}">
+                        </div>
+                    </div>
+                    
+                    <!-- Address -->
+                    <div class="mb-3">
+                        <label for="address" class="form-label">
+                            <i data-feather="map-pin" class="me-1"></i>Address *
+                        </label>
+                        <textarea class="form-control form-control-lg" id="address" 
+                                  name="address" rows="3" required>{{ patient.address if edit_mode else '' }}</textarea>
+                    </div>
+                    
+                    <!-- Medical Conditions -->
+                    <div class="mb-3">
+                        <label for="medical_conditions" class="form-label">
+                            <i data-feather="activity" class="me-1"></i>Medical Conditions / Allergies
+                        </label>
+                        <textarea class="form-control form-control-lg" id="medical_conditions" 
+                                  name="medical_conditions" rows="3" 
+                                  placeholder="List any existing medical conditions, allergies, or chronic diseases">{{ patient.medical_conditions if edit_mode else '' }}</textarea>
+                    </div>
+                    
+                    <!-- Current Medications -->
+                    <div class="mb-4">
+                        <label for="medications" class="form-label">
+                            <i data-feather="package" class="me-1"></i>Current Medications
+                        </label>
+                        <textarea class="form-control form-control-lg" id="medications" 
+                                  name="medications" rows="3" 
+                                  placeholder="List current medications with dosages">{{ patient.medications if edit_mode else '' }}</textarea>
+                    </div>
+                    
+                    <!-- Form Actions -->
+                    <div class="d-grid gap-2 d-md-flex justify-content-md-end">
+                        <a href="{{ url_for('patients') }}" class="btn btn-secondary btn-lg">
+                            <i data-feather="x" class="me-1"></i>Cancel
+                        </a>
+                        <button type="submit" class="btn btn-success btn-lg">
+                            <i data-feather="{% if edit_mode %}save{% else %}user-plus{% endif %}" class="me-1"></i>
+                            {% if edit_mode %}Update Patient{% else %}Register Patient{% endif %}
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    
+    <!-- Help Section -->
+    <div class="col-lg-4">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i data-feather="help-circle" class="me-2"></i>
+                    Help & Guidelines
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="mb-3">
+                    <h6><i data-feather="info" class="me-1"></i>Required Fields</h6>
+                    <p class="small text-muted">Fields marked with * are mandatory and must be filled.</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h6><i data-feather="hash" class="me-1"></i>Patient ID</h6>
+                    <p class="small text-muted">Use a unique identifier like PHC001, ASHA001, etc. This cannot be changed later.</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h6><i data-feather="phone" class="me-1"></i>Phone Numbers</h6>
+                    <p class="small text-muted">Include country code for better accessibility. Emergency contact should be a different person.</p>
+                </div>
+                
+                <div class="mb-3">
+                    <h6><i data-feather="activity" class="me-1"></i>Medical Information</h6>
+                    <p class="small text-muted">Include all known allergies, chronic conditions, and current treatments for better care.</p>
+                </div>
+                
+                <div class="alert alert-info">
+                    <i data-feather="shield" class="me-1"></i>
+                    <strong>Data Privacy:</strong> All patient information is stored locally and handled according to health data privacy guidelines.
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize Feather Icons
+    document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
+        
+        // Auto-generate Patient ID for new patients
+        {% if not edit_mode %}
+        const patientIdField = document.getElementById('patient_id');
+        if (!patientIdField.value) {
+            const now = new Date();
+            const timestamp = now.getFullYear().toString().substr(-2) + 
+                            (now.getMonth() + 1).toString().padStart(2, '0') + 
+                            now.getDate().toString().padStart(2, '0') + 
+                            now.getHours().toString().padStart(2, '0') + 
+                            now.getMinutes().toString().padStart(2, '0');
+            patientIdField.value = 'PAT' + timestamp;
+        }
+        {% endif %}
+        
+        // Form validation
+        const form = document.querySelector('form');
+        form.addEventListener('submit', function(e) {
+            const requiredFields = form.querySelectorAll('[required]');
+            let isValid = true;
+            
+            requiredFields.forEach(field => {
+                if (!field.value.trim()) {
+                    field.classList.add('is-invalid');
+                    isValid = false;
+                } else {
+                    field.classList.remove('is-invalid');
+                }
+            });
+            
+            if (!isValid) {
+                e.preventDefault();
+                alert('Please fill in all required fields.');
+            }
+        });
+    });
+</script>
+{% endblock %}
