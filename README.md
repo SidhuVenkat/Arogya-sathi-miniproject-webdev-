@@ -45,3 +45,4 @@ Nutrition & hygiene modules (audio/visual)
 For serious cases, app suggests nearby PHCs or emergency contacts.
 ![Image](https://github.com/user-attachments/assets/a6e87087-0ce5-4dcf-b90d-28ee0b8796ab)
 ![Image](https://github.com/user-attachments/assets/a34abd44-2cad-4a01-937e-5e5522a68d2f)
+![Image](https://github.com/user-attachments/assets/49d77c3e-0d85-483e-8c1f-98733183411a)
