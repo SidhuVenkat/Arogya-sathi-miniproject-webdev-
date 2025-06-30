@@ -1,0 +1,294 @@
+{% extends "base.html" %}
+
+{% block title %}Health Education - Rural Health Assistant{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-header">
+            <h1 class="h2 mb-4">
+                <i data-feather="book-open" class="me-2"></i>
+                Health Education & Awareness
+            </h1>
+        </div>
+    </div>
+</div>
+
+<!-- Education Categories -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i data-feather="list" class="me-2"></i>
+                    Health Education Materials ({{ content|length }} resources available)
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if content %}
+                    <div class="row">
+                        {% for item in content %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 education-card">
+                                <div class="card-header bg-{% if item.category == 'Preventive Care' %}success{% elif item.category == 'Maternal Health' %}info{% elif item.category == 'Child Health' %}warning{% elif item.category == 'Disease Prevention' %}danger{% else %}primary{% endif %} text-white">
+                                    <h6 class="card-title mb-0">
+                                        <i data-feather="{% if item.category == 'Preventive Care' %}shield{% elif item.category == 'Maternal Health' %}heart{% elif item.category == 'Child Health' %}smile{% elif item.category == 'Disease Prevention' %}alert-circle{% else %}book{% endif %}" class="me-1"></i>
+                                        {{ item.category }}
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ item.title }}</h5>
+                                    {% if item.target_audience %}
+                                    <p class="card-text">
+                                        <strong>Target:</strong> {{ item.target_audience }}
+                                    </p>
+                                    {% endif %}
+                                    {% if item.language %}
+                                    <p class="card-text">
+                                        <i data-feather="globe" class="me-1 text-muted"></i>
+                                        <small class="text-muted">Available in {{ item.language }}</small>
+                                    </p>
+                                    {% endif %}
+                                    <div class="education-content">
+                                        {{ item.content[:200]|nl2br }}
+                                        {% if item.content|length > 200 %}
+                                            <span class="text-muted">... 
+                                                <button class="btn btn-link p-0 text-decoration-none" 
+                                                        onclick="toggleContent('content-{{ loop.index }}')">
+                                                    Read more
+                                                </button>
+                                            </span>
+                                            <div id="content-{{ loop.index }}" class="collapse">
+                                                {{ item.content[200:]|nl2br }}
+                                            </div>
+                                        {% endif %}
+                                    </div>
+                                </div>
+                                <div class="card-footer">
+                                    <button class="btn btn-{% if item.category == 'Preventive Care' %}success{% elif item.category == 'Maternal Health' %}info{% elif item.category == 'Child Health' %}warning{% elif item.category == 'Disease Prevention' %}danger{% else %}primary{% endif %} w-100" 
+                                            onclick="window.print()">
+                                        <i data-feather="printer" class="me-1"></i>
+                                        Print Material
+                                    </button>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i data-feather="book-open" class="display-1 text-muted mb-3"></i>
+                        <h4 class="text-muted">No Health Education Materials</h4>
+                        <p class="text-muted mb-4">
+                            Health education materials and awareness content will be available here to help community health education.
+                        </p>
+                        <div class="alert alert-info">
+                            <i data-feather="info" class="me-1"></i>
+                            <strong>Note:</strong> Contact your local health administrator to add health education materials to this section.
+                        </div>
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Quick Health Tips -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header bg-success text-white">
+                <h5 class="card-title mb-0">
+                    <i data-feather="heart" class="me-2"></i>
+                    Essential Health Tips for Rural Communities
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-info text-white">
+                                <h6 class="mb-0">
+                                    <i data-feather="droplet" class="me-1"></i>
+                                    Water & Sanitation
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Boil water for 10 minutes before drinking
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Wash hands with soap frequently
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Use clean toilets and proper drainage
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Keep food covered and fresh
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-warning text-dark">
+                                <h6 class="mb-0">
+                                    <i data-feather="shield" class="me-1"></i>
+                                    Prevention is Better
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Get regular health check-ups
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Complete vaccination schedules
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Eat nutritious local foods
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Exercise regularly and get adequate sleep
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-danger text-white">
+                                <h6 class="mb-0">
+                                    <i data-feather="alert-triangle" class="me-1"></i>
+                                    Warning Signs - Seek Help
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i data-feather="alert-circle" class="me-2 text-danger"></i>
+                                        High fever for more than 3 days
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="alert-circle" class="me-2 text-danger"></i>
+                                        Severe diarrhea or vomiting
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="alert-circle" class="me-2 text-danger"></i>
+                                        Difficulty breathing or chest pain
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="alert-circle" class="me-2 text-danger"></i>
+                                        Unusual bleeding or severe injuries
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-md-6 mb-4">
+                        <div class="card h-100">
+                            <div class="card-header bg-primary text-white">
+                                <h6 class="mb-0">
+                                    <i data-feather="users" class="me-1"></i>
+                                    Community Health
+                                </h6>
+                            </div>
+                            <div class="card-body">
+                                <ul class="list-unstyled">
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Share health knowledge with neighbors
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Support pregnant women and new mothers
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Keep your environment clean
+                                    </li>
+                                    <li class="mb-2">
+                                        <i data-feather="check-circle" class="me-2 text-success"></i>
+                                        Report health issues to ASHA workers
+                                    </li>
+                                </ul>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Related Resources -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i data-feather="link" class="me-2"></i>
+                    Related Resources
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row">
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('first_aid') }}" class="btn btn-outline-danger btn-lg w-100 h-100 d-flex flex-column justify-content-center">
+                            <i data-feather="shield" class="mb-2 display-6"></i>
+                            <strong>First Aid Guide</strong>
+                            <small class="text-muted">Emergency procedures and response</small>
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('emergency_contacts') }}" class="btn btn-outline-warning btn-lg w-100 h-100 d-flex flex-column justify-content-center">
+                            <i data-feather="phone-call" class="mb-2 display-6"></i>
+                            <strong>Emergency Contacts</strong>
+                            <small class="text-muted">Local and national emergency numbers</small>
+                        </a>
+                    </div>
+                    <div class="col-md-4 mb-3">
+                        <a href="{{ url_for('patients') }}" class="btn btn-outline-primary btn-lg w-100 h-100 d-flex flex-column justify-content-center">
+                            <i data-feather="users" class="mb-2 display-6"></i>
+                            <strong>Patient Records</strong>
+                            <small class="text-muted">Manage patient information and history</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize Feather Icons
+    document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
+    });
+    
+    function toggleContent(contentId) {
+        const content = document.getElementById(contentId);
+        const button = content.previousElementSibling.querySelector('button');
+        
+        if (content.classList.contains('show')) {
+            content.classList.remove('show');
+            button.textContent = 'Read more';
+        } else {
+            content.classList.add('show');
+            button.textContent = 'Read less';
+        }
+    }
+</script>
+{% endblock %}

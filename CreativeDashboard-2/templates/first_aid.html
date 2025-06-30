@@ -1,0 +1,178 @@
+{% extends "base.html" %}
+
+{% block title %}First Aid Guide - Rural Health Assistant{% endblock %}
+
+{% block content %}
+<div class="row">
+    <div class="col-12">
+        <div class="page-header">
+            <h1 class="h2 mb-4">
+                <i data-feather="shield" class="me-2"></i>
+                First Aid Emergency Guide
+            </h1>
+        </div>
+    </div>
+</div>
+
+<!-- Search Bar -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-body">
+                <form method="GET" action="{{ url_for('first_aid') }}" class="d-flex">
+                    <div class="input-group">
+                        <span class="input-group-text">
+                            <i data-feather="search"></i>
+                        </span>
+                        <input type="text" class="form-control form-control-lg" 
+                               name="search" value="{{ search_query }}" 
+                               placeholder="Search by emergency type, symptoms, or category">
+                        <button class="btn btn-danger" type="submit">
+                            <i data-feather="search" class="me-1"></i>Search
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Emergency Alert -->
+<div class="row mb-4">
+    <div class="col-12">
+        <div class="alert alert-danger border-0">
+            <div class="row align-items-center">
+                <div class="col-auto">
+                    <i data-feather="phone-call" class="display-4"></i>
+                </div>
+                <div class="col">
+                    <h4 class="alert-heading mb-1">Life-Threatening Emergency?</h4>
+                    <p class="mb-0">For severe emergencies, call 108 (National Ambulance) or nearest hospital immediately!</p>
+                </div>
+                <div class="col-auto">
+                    <a href="tel:108" class="btn btn-light btn-lg">
+                        <i data-feather="phone" class="me-1"></i>Call 108
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- First Aid Categories -->
+<div class="row">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i data-feather="list" class="me-2"></i>
+                    First Aid Procedures ({{ guides|length }} guides available)
+                </h5>
+            </div>
+            <div class="card-body">
+                {% if guides %}
+                    <div class="row">
+                        {% for guide in guides %}
+                        <div class="col-md-6 col-lg-4 mb-4">
+                            <div class="card h-100 first-aid-card">
+                                <div class="card-header bg-{% if guide.category == 'Critical' %}danger{% elif guide.category == 'Urgent' %}warning{% else %}info{% endif %} text-white">
+                                    <h6 class="card-title mb-0">
+                                        <i data-feather="{% if guide.category == 'Critical' %}alert-triangle{% elif guide.category == 'Urgent' %}alert-circle{% else %}info{% endif %}" class="me-1"></i>
+                                        {{ guide.category|title }} Emergency
+                                    </h6>
+                                </div>
+                                <div class="card-body">
+                                    <h5 class="card-title">{{ guide.title }}</h5>
+                                    {% if guide.symptoms %}
+                                    <p class="card-text">
+                                        <strong>Symptoms:</strong> {{ guide.symptoms[:100] }}{% if guide.symptoms|length > 100 %}...{% endif %}
+                                    </p>
+                                    {% endif %}
+                                    <a href="{{ url_for('first_aid_detail', guide_id=guide.guide_id) }}" 
+                                       class="btn btn-{% if guide.category == 'Critical' %}danger{% elif guide.category == 'Urgent' %}warning{% else %}info{% endif %} btn-lg w-100">
+                                        <i data-feather="eye" class="me-1"></i>
+                                        View Instructions
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                        {% endfor %}
+                    </div>
+                {% else %}
+                    <div class="text-center py-5">
+                        <i data-feather="shield" class="display-1 text-muted mb-3"></i>
+                        <h4 class="text-muted">No First Aid Guides Found</h4>
+                        <p class="text-muted mb-4">
+                            {% if search_query %}
+                                No first aid guides match your search criteria "{{ search_query }}".
+                            {% else %}
+                                First aid guides will be available here to help with emergency situations.
+                            {% endif %}
+                        </p>
+                        {% if search_query %}
+                            <a href="{{ url_for('first_aid') }}" class="btn btn-outline-primary">
+                                <i data-feather="x" class="me-1"></i>Clear Search
+                            </a>
+                        {% endif %}
+                    </div>
+                {% endif %}
+            </div>
+        </div>
+    </div>
+</div>
+
+<!-- Emergency Contacts Quick Access -->
+<div class="row mt-4">
+    <div class="col-12">
+        <div class="card">
+            <div class="card-header">
+                <h5 class="card-title mb-0">
+                    <i data-feather="phone-call" class="me-2"></i>
+                    Emergency Numbers - Quick Access
+                </h5>
+            </div>
+            <div class="card-body">
+                <div class="row text-center">
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="tel:108" class="btn btn-danger btn-lg w-100 h-100 d-flex flex-column justify-content-center">
+                            <i data-feather="phone" class="mb-1"></i>
+                            <strong>108</strong>
+                            <small>Ambulance</small>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="tel:102" class="btn btn-primary btn-lg w-100 h-100 d-flex flex-column justify-content-center">
+                            <i data-feather="phone" class="mb-1"></i>
+                            <strong>102</strong>
+                            <small>Medical Helpline</small>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="tel:100" class="btn btn-warning btn-lg w-100 h-100 d-flex flex-column justify-content-center">
+                            <i data-feather="phone" class="mb-1"></i>
+                            <strong>100</strong>
+                            <small>Police</small>
+                        </a>
+                    </div>
+                    <div class="col-6 col-md-3 mb-3">
+                        <a href="{{ url_for('emergency_contacts') }}" class="btn btn-info btn-lg w-100 h-100 d-flex flex-column justify-content-center">
+                            <i data-feather="users" class="mb-1"></i>
+                            <strong>Local</strong>
+                            <small>Emergency Contacts</small>
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
+
+{% block scripts %}
+<script>
+    // Initialize Feather Icons
+    document.addEventListener('DOMContentLoaded', function() {
+        feather.replace();
+    });
+</script>
+{% endblock %}
