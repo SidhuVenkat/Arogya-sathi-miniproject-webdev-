@@ -1,6 +1,0 @@
-contact_id,name,designation,phone,address,availability,specialization
-EC001,District Hospital,Primary Healthcare Center,+91-1234567890,Main Road Near Bus Stand,24/7,Hospital
-EC002,Dr. Rajesh Kumar,Chief Medical Officer,+91-9876543210,District Hospital,9 AM - 6 PM,Doctor
-EC003,Ambulance Service,Emergency Transport,108,District Wide Coverage,24/7,Ambulance
-EC004,Sister Mary,Head Nurse,+91-8765432109,Primary Health Center,8 AM - 8 PM,Nurse
-EC005,Police Station,Emergency Response,100,Town Center,24/7,Police
