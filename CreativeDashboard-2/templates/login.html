@@ -1,0 +1,17 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Login - User Type Selection</title>
+    <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}">
+</head>
+<body>
+    <div class="login-container">
+        <h2>Select User Type</h2>
+        <form method="post">
+            <button type="submit" name="user_type" value="asha">ASHA Worker Login</button>
+            <button type="submit" name="user_type" value="patient">Patient Login</button>
+        </form>
+    </div>
+</body>
+</html> 
