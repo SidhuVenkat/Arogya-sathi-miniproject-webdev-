@@ -1,0 +1,36 @@
+{% extends 'base.html' %}
+{% block title %}Add Reminder{% endblock %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Send Email Reminder</h2>
+    <div class="alert alert-info">
+        <i data-feather="info" class="me-2"></i>
+        Email will be sent immediately when you submit this form.
+    </div>
+    <form method="POST" action="{{ url_for('add_reminder') }}">
+        <div class="mb-3">
+            <label for="patient_id" class="form-label">Select Patient</label>
+            <select class="form-select" id="patient_id" name="patient_id" required>
+                <option value="">-- Select Patient --</option>
+                {% for patient in patients %}
+                <option value="{{ patient.patient_id }}">{{ patient.name }} ({{ patient.email }})</option>
+                {% endfor %}
+            </select>
+        </div>
+        <div class="mb-3">
+            <label for="message" class="form-label">Reminder Message</label>
+            <textarea class="form-control" id="message" name="message" rows="3" required 
+                      placeholder="Enter your reminder message here..."></textarea>
+        </div>
+        <div class="mb-3">
+            <label for="scheduled_time" class="form-label">Appointment Date & Time</label>
+            <input type="datetime-local" class="form-control" id="scheduled_time" name="scheduled_time" required>
+            <div class="form-text">This will be included in the email for reference</div>
+        </div>
+        <button type="submit" class="btn btn-success">
+            <i data-feather="mail" class="me-1"></i>Send Email Reminder
+        </button>
+        <a href="{{ url_for('reminders') }}" class="btn btn-secondary ms-2">Cancel</a>
+    </form>
+</div>
+{% endblock %} 
